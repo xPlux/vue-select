@@ -442,6 +442,15 @@
       options(val) {
         if (!this.taggable && this.resetOnOptionsChange) {
           this.clearSelection()
+        } else {
+          /** Reduce HotFix - TODO: DRY and docs */
+          if (this.$options.propsData.hasOwnProperty('reduce') && this.value) {
+            if (Array.isArray(this.value)) {
+              this.$data._value = this.value.map(value => this.findOptionFromReducedValue(value));
+            } else {
+              this.$data._value = this.findOptionFromReducedValue(this.value);
+            }
+          }
         }
       },
 
@@ -453,6 +462,17 @@
        */
       multiple() {
         this.clearSelection()
+      },
+
+      /** Reduce HotFix - TODO: DRY and docs */
+      value(val) {
+        if (this.$options.propsData.hasOwnProperty('reduce') && val) {
+          if (Array.isArray(val)) {
+            this.$data._value = val.map(value => this.findOptionFromReducedValue(value));
+          } else {
+            this.$data._value = this.findOptionFromReducedValue(val);
+          }
+        }
       },
     },
 
